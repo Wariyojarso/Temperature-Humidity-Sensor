@@ -29,3 +29,4 @@ This project uses an **Arduino Mega 2560 R3**, **DHT11 sensor**, and an **LCD 16
 1. Open **Arduino IDE**.
 2. Install the **DHT** and **LiquidCrystal** libraries (`Sketch > Include Library > Manage Libraries`).
 3. Upload the `temperature_humidity_sensor.ino` file to your **Mega 2560**.
+youtube video link https://youtu.be/LFQMO0YLEUY
