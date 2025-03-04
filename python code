@@ -1,0 +1,55 @@
+import Adafruit_DHT
+import RPi.LCD as LCD
+import time
+
+# Define sensor type and pin
+DHT_SENSOR = Adafruit_DHT.DHT11
+DHT_PIN = 2  # GPIO pin for DHT11 data
+
+# LCD Pin Configuration
+LCD_RS = 7
+LCD_E = 8
+LCD_D4 = 9
+LCD_D5 = 10
+LCD_D6 = 11
+LCD_D7 = 12
+
+def main():
+    # Initialize LCD
+    lcd = LCD.Adafruit_CharLCD(LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7, 16, 2)
+    
+    # Clear LCD and show initializing message
+    lcd.clear()
+    lcd.message('Initializing...')
+    time.sleep(2)
+    lcd.clear()
+
+    while True:
+        # Read temperature and humidity
+        humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
+
+        # Check if readings are valid
+        if humidity is not None and temperature is not None:
+            # Clear LCD
+            lcd.clear()
+
+            # Display temperature
+            lcd.setCursor(0, 0)
+            lcd.message(f'Temp: {temperature:.1f} C')
+
+            # Display humidity
+            lcd.setCursor(0, 1)
+            lcd.message(f'Humidity: {humidity:.1f} %')
+        else:
+            # Display error if sensor reading fails
+            lcd.clear()
+            lcd.message('Sensor error!')
+
+        # Wait for 2 seconds before next reading
+        time.sleep(2)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Measurement stopped by User")
