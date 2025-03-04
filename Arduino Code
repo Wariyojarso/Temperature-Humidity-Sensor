@@ -1,0 +1,46 @@
+#include <Wire.h>
+#include <LiquidCrystal.h>
+#include <DHT.h>
+
+// Define LCD pins
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+
+// Define DHT11 settings
+#define DHTPIN 2   // DHT11 data pin connected to digital pin 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+    lcd.begin(16, 2);  // Initialize 16x2 LCD
+    dht.begin();       // Initialize DHT11
+    lcd.print("Initializing...");
+    delay(2000);
+    lcd.clear();
+}
+
+void loop() {
+    // Read humidity and temperature
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature(); // Celsius
+
+    // Check if readings are valid
+    if (isnan(humidity) || isnan(temperature)) {
+        lcd.setCursor(0, 0);
+        lcd.print("Sensor error!");
+        return;
+    }
+
+    // Display temperature
+    lcd.setCursor(0, 0);
+    lcd.print("Temp: ");
+    lcd.print(temperature);
+    lcd.print(" C");
+
+    // Display humidity
+    lcd.setCursor(0, 1);
+    lcd.print("Humidity: ");
+    lcd.print(humidity);
+    lcd.print(" %");
+
+    delay(2000);  // Update every 2 seconds
+}
